@@ -1,0 +1,8 @@
+#!/bin/bash
+
+$HOME/.fehbg
+xsetroot -cursor_name left_ptr
+$HOME/.config/polybar/launch.sh
+picom &
+dunst &
+
