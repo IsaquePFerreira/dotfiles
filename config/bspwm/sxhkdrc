@@ -8,7 +8,7 @@ super + Return
 
 # program launcher
 super + p
-	dmenu_run -fn 'Ubuntu Regular' -sb '#088600' -sf '#181a17'
+	dmenu_run -fn 'Inconsolata-15' -sb '#088600' -sf '#181a17'
 
 # web browser
 super + w
@@ -22,6 +22,23 @@ super + e
 Print
     gnome-screenshot -i
 
+#
+# volume
+#
+
+# volume plus
+alt + equal
+    vol+
+
+# volume minus
+alt + minus
+    vol-
+
+# volume minus
+alt + 0
+    vol-mute
+
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
@@ -34,8 +51,21 @@ super + Escape
 super + shift + r
 	bspc wm -r
 
+#
+# session management
+#
+
+# power options
 super + shift + e
-	bspc quit
+    dmenu-bspwm-logout
+
+# screen lock
+super + ctrl + l
+    slock
+
+#
+# windows
+#
 
 # close
 super + shift + c
