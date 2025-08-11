@@ -53,7 +53,21 @@ if [ "$?" != "0" ]; then
 fi
 
 # Copia arquivos de configuração para seu locais apropriados
-cp -r config/* ~/.config/
+mkdir -p $HOME/.config
+cp -r config/* $HOME/.config/
+
+if [ "$?" != "0" ]; then
+    echo "Deu ruim... Saindo..."
+    exit 1
+fi
+
+mkdir -p $HOME/.local/bin
+cp -r bin/* $HOME/.local/bin/
+
+if [ "$?" != "0" ]; then
+    echo "Deu ruim... Saindo..."
+    exit 1
+fi
 
 for f in bash_aliases gitconfig tmux.conf; do
 	cp $f "$HOME/.${f##/}"
@@ -69,10 +83,21 @@ if [ ! -d "$WALLPAPERS_FOLDER" ]; then
     git clone --depth=1 "$URL_WALLPAPERS" "$WALLPAPERS_FOLDER"
 fi
 
+if [ "$?" != "0" ]; then
+    echo "Deu ruim... Saindo..."
+    exit 1
+fi
+
 # Baixa fontes
 if [ ! -d "$FONTS_FOLDER" ]; then
     git clone --depth=1 "$URL_FONTS" "$FONTS_FOLDER"
 fi
+
+if [ "$?" != "0" ]; then
+    echo "Deu ruim... Saindo..."
+    exit 1
+fi
+
 # Atualiza cache das fontes
 fc-cache -fv
 
