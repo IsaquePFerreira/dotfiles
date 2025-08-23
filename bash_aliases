@@ -27,7 +27,7 @@ alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 # Outros
 alias wget="wget -c"
-alias ips='ip -c -br a'
+alias ips="ip -c -br a"
 
 # Habilita o autocomplete do BASH a ignorar maiúsculas e maiúsculas
 bind "set completion-ignore-case on"
