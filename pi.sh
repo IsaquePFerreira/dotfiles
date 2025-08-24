@@ -18,6 +18,9 @@ PACKAGES=(
 "libX11-devel"
 "libXft-devel"
 "libXinerama-devel"
+"lightdm"
+"lightdm-gtk3-greeter"
+"lightdm-gtk-greeter-settings"
 "man-db"
 "dbus"
 "elogind"
@@ -75,7 +78,6 @@ PACKAGES=(
 "pkgconf-dev"
 "python3-pip"
 "gdb"
-"cross-arm-none-eabi"
 "openjdk"
 ) # Lista de pacotes
 
@@ -89,6 +91,15 @@ sudo xbps-install -y ${PACKAGES[@]}
 mkdir -p $HOME/.config
 cp -r config/* $HOME/.config/
 
+# Cria diretório de scripts
+mkdir -p $HOME/.local/bin
+cp -r bin/* $HOME/.local/bin/
+
+# Copia arquivos da home
+for f in bash_aliases gitconfig tmux.conf; do
+	cp $f "$HOME/.${f##/}"
+done
+
 # Cria diretório do suckless
 mkdir -p $SUCKLESS_DIR
 
@@ -97,7 +108,7 @@ for prog in dwm dmenu st dwmblocks slock; do
     PROG_PATH="$SUCKLESS_DIR/$prog"
     if [ ! -d "$PROG_PATH"]; then
         echo "Download $prog..."
-        git clone "https://git.suckless.org/$prog"
+        git clone "https://git.suckless.org/$prog" "$PROG_PATH"
         cd "$PROG_PATH"
         echo "Build $prog..."
         make
@@ -105,14 +116,6 @@ for prog in dwm dmenu st dwmblocks slock; do
     else
         echo "$prog is installed... pass.."
     fi
-done
-
-# Cria diretório de scripts
-mkdir -p $HOME/.local/bin
-cp -r bin/* $HOME/.local/bin/
-
-for f in bash_aliases gitconfig tmux.conf; do
-	cp $f "$HOME/.${f##/}"
 done
 
 # Limpa pacotes residuais
