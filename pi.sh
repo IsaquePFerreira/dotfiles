@@ -7,7 +7,6 @@
 set -e # Sai em caso de erro
 
 # Variáveis
-USERNAME="$(logname)" # Pega o nome do usuário
 SUCKLESS_DIR="$HOME/.config/suckless" # Diretório programas suckless
 PACKAGES=(
 "linux-headers"
@@ -87,13 +86,17 @@ sudo xbps-install -Syu
 # Instala os pacotes necessários
 sudo xbps-install -y ${PACKAGES[@]}
 
-# Copia arquivos de configuração para seu locais apropriados
+# Copia arquivos de configuração
 mkdir -p $HOME/.config
 cp -r config/* $HOME/.config/
 
-# Cria diretório de scripts
+# Copia scripts
 mkdir -p $HOME/.local/bin
 cp -r bin/* $HOME/.local/bin/
+
+# Copia arquivos de configuração do teclado e touchpad
+sudo mkdir -p /etc/X11/xorg.conf.d
+sudo cp -r xorg.conf.d/* /etc/X11/xorg.conf.d/
 
 # Copia arquivos da home
 for f in bash_aliases gitconfig tmux.conf; do
