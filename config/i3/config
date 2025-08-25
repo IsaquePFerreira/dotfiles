@@ -199,6 +199,8 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     status_command i3status -c $HOME/.config/i3/i3status.conf
+    font pango:Iosevka Regular 13
+    separator_symbol "〈 "
     colors {
         background #181a17
         statusline #c5c8c6
