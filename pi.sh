@@ -7,6 +7,7 @@
 set -e # Sai em caso de erro
 
 # Variáveis
+WALLPAPERS_DIR="$HOME/Pictures/wallpapers/"
 PACKAGES=(
 "linux-headers"
 "xorg-minimal"
@@ -18,6 +19,7 @@ PACKAGES=(
 "lightdm-gtk3-greeter"
 "lightdm-gtk-greeter-settings"
 "i3"
+"i3status"
 "i3lock-color"
 "dmenu"
 "xdg-user-dirs"
@@ -44,6 +46,9 @@ PACKAGES=(
 "ncdu"
 "feh"
 "mpv"
+"cmus"
+"feh"
+"sxiv"
 "mupdf"
 "ranger"
 "cmatrix"
@@ -62,6 +67,7 @@ PACKAGES=(
 "noto-fonts-cjk"
 "terminus-font"
 "font-inconsolata-otf"
+"font-iosevka"
 "gnome-themes-extra"
 "papirus-icon-theme"
 "papirus-folders"
@@ -103,9 +109,13 @@ sudo mkdir -p /etc/X11/xorg.conf.d
 sudo cp -r xorg.conf.d/* /etc/X11/xorg.conf.d/
 
 # Copia arquivos da home
-for f in bash_aliases tmux.conf; do
+for f in bash_aliases fehbg tmux.conf; do
 	cp $f "$HOME/.${f##/}"
 done
+
+# Copia wallpapers
+mkdir -p $WALLPAPERS_DIR
+cp -r wallpapers/* $WALLPAPERS_DIR
 
 # Limpa pacotes residuais
 sudo xbps-remove -oOy
