@@ -1,5 +1,5 @@
 #!/bin/bash
-# ppi.sh
+# pi.sh
 #
 # Faz a pós-instalação do Void Linux.
 #
@@ -7,25 +7,29 @@
 set -e # Sai em caso de erro
 
 # Variáveis
-SUCKLESS_DIR="$HOME/.config/suckless" # Diretório programas suckless
 PACKAGES=(
 "linux-headers"
 "xorg-minimal"
 "xf86-video-intel"
 "xorg-input-drivers"
+"xprop"
 "base-devel"
-"libX11-devel"
-"libXft-devel"
-"libXinerama-devel"
 "lightdm"
 "lightdm-gtk3-greeter"
 "lightdm-gtk-greeter-settings"
+"i3"
+"i3lock-color"
+"dmenu"
+"xdg-user-dirs"
+"xdg-utils"
 "man-db"
 "dbus"
 "elogind"
 "polkit"
 "ufw"
+"firefox"
 "chromium"
+"thunderbird"
 "curl"
 "wget"
 "docker"
@@ -74,7 +78,7 @@ PACKAGES=(
 "meson"
 "ImageMagick"
 "clang"
-"pkgconf-dev"
+"pkgconf-devel"
 "python3-pip"
 "gdb"
 "openjdk"
@@ -99,26 +103,8 @@ sudo mkdir -p /etc/X11/xorg.conf.d
 sudo cp -r xorg.conf.d/* /etc/X11/xorg.conf.d/
 
 # Copia arquivos da home
-for f in bash_aliases gitconfig tmux.conf; do
+for f in bash_aliases tmux.conf; do
 	cp $f "$HOME/.${f##/}"
-done
-
-# Cria diretório do suckless
-mkdir -p $SUCKLESS_DIR
-
-# Builda programas suckless
-for prog in dwm dmenu st dwmblocks slock; do
-    PROG_PATH="$SUCKLESS_DIR/$prog"
-    if [ ! -d "$PROG_PATH"]; then
-        echo "Download $prog..."
-        git clone "https://git.suckless.org/$prog" "$PROG_PATH"
-        cd "$PROG_PATH"
-        echo "Build $prog..."
-        make
-        sudo make clean install
-    else
-        echo "$prog is installed... pass.."
-    fi
 done
 
 # Limpa pacotes residuais
@@ -130,14 +116,18 @@ sudo xbps-reconfigure -fa
 # Atualiza cache de fontes
 fc-cache -fv
 
+# Cria diretórios do usuário
+xdg-user-dirs-update
+
 # Habilita firewall
 sudo ufw enable
 
 # Habilita serviços essenciais
 sudo ln -s /etc/sv/dbus /var/service/
 sudo ln -s /etc/sv/elogind /var/service/
-sudo ln -s /etc/sv/polkit /var/service/
+sudo ln -s /etc/sv/polkitd /var/service/
 sudo ln -s /etc/sv/ufw /var/service/
+sudo ln -s /etc/sv/lightdm /var/service/
 
 # Remove ttys não usados
 for tty in tty3 tty4 tty5 tty6; do
