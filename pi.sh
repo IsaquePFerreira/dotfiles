@@ -7,31 +7,12 @@
 set -e # Sai em caso de erro
 
 # Variáveis
-WALLPAPERS_DIR="$HOME/Pictures/wallpapers/"
 PACKAGES=(
-"linux-headers"
-"xorg-minimal"
-"xf86-video-intel"
-"xorg-input-drivers"
-"xprop"
-"base-devel"
-"lightdm"
-"lightdm-gtk3-greeter"
-"lightdm-gtk-greeter-settings"
+"build-essential"
 "i3"
 "i3status"
-"i3lock-color"
-"dmenu"
-"xdg-user-dirs"
-"xdg-utils"
+"suckless-tools"
 "man-db"
-"dbus"
-"elogind"
-"polkit"
-"ufw"
-"firefox"
-"chromium"
-"thunderbird"
 "curl"
 "wget"
 "docker"
@@ -39,62 +20,36 @@ PACKAGES=(
 "gimp"
 "ffmpeg"
 "git"
-"htop"
+"btop"
 "inxi"
 "lynx"
-"w3m"
 "ncdu"
-"feh"
 "mpv"
 "cmus"
-"feh"
 "sxiv"
 "mupdf"
 "ranger"
 "cmatrix"
-"sakura"
-"bash-completion"
-"flameshot"
+"xterm"
 "alsa-utils"
-"cups"
-"cups-pdf"
-"bluez"
-"bluez-alsa"
-"gvfs"
-"gvfs-mtp"
-"android-tools"
-"noto-fonts-emoji"
-"noto-fonts-cjk"
-"terminus-font"
-"font-inconsolata-otf"
-"font-iosevka"
-"gnome-themes-extra"
-"papirus-icon-theme"
-"papirus-folders"
-"neofetch"
 "neovim"
 "tmux"
 "virt-manager"
-"lua"
-"php8.3"
-"php8.3-mysql"
+"qemu-kvm"
+"php8.2"
+"php8.2-mysql"
 "sassc"
-"cmake"
-"ninja"
-"meson"
-"ImageMagick"
-"clang"
-"pkgconf-devel"
+"imagemagick"
 "python3-pip"
+"python3-venv"
 "gdb"
-"openjdk"
 ) # Lista de pacotes
 
 # Atualiza o sistema
-sudo xbps-install -Syu
+sudo apt update && sudo apt upgrade -y
 
 # Instala os pacotes necessários
-sudo xbps-install -y ${PACKAGES[@]}
+sudo apt install -y ${PACKAGES[@]}
 
 # Copia arquivos de configuração
 mkdir -p $HOME/.config
@@ -104,49 +59,21 @@ cp -r config/* $HOME/.config/
 mkdir -p $HOME/.local/bin
 cp -r bin/* $HOME/.local/bin/
 
-# Copia arquivos de configuração do teclado e touchpad
-sudo mkdir -p /etc/X11/xorg.conf.d
-sudo cp -r xorg.conf.d/* /etc/X11/xorg.conf.d/
-
 # Copia arquivos da home
-for f in bash_aliases fehbg tmux.conf; do
+for f in bash_aliases tmux.conf; do
 	cp $f "$HOME/.${f##/}"
 done
 
-# Copia wallpapers
-mkdir -p $WALLPAPERS_DIR
-cp -r wallpapers/* $WALLPAPERS_DIR
-
 # Limpa pacotes residuais
-sudo xbps-remove -oOy
-
-# Reconfigura todos os pacotes
-sudo xbps-reconfigure -fa
-
-# Atualiza cache de fontes
-fc-cache -fv
-
-# Cria diretórios do usuário
-xdg-user-dirs-update
-
-# Habilita firewall
-sudo ufw enable
-
-# Habilita serviços essenciais
-sudo ln -s /etc/sv/dbus /var/service/
-sudo ln -s /etc/sv/elogind /var/service/
-sudo ln -s /etc/sv/polkitd /var/service/
-sudo ln -s /etc/sv/ufw /var/service/
-sudo ln -s /etc/sv/lightdm /var/service/
-
-# Remove ttys não usados
-for tty in tty3 tty4 tty5 tty6; do
-    sudo rm -f /var/service/agetty-$tty
-done
+sudo apt autoremove && sudo apt autoclean && sudo apt clean
 
 # GRUB timeout
 sudo sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
 sudo grub-mkconfig -o /boot/grub/grub.cfg # Recria arquivo de configuração
 
 # Reinicia o Sistema
+read -p 'Deseja reiniciar?[sN] ' resp
+if [ "${resp,,}" != 's' ]; then
+	exit 1
+fi
 sudo reboot
