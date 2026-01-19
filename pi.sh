@@ -61,7 +61,7 @@ fi
 
 echo Install scripts...
 for path_ in bin/*; do
-    create_symlink $dotfiles_dir/$path_ $user_bin
+    create_symlink $dotfiles_dir/$path_ $user_bin/$path_
 done
 
 echo Update system...
