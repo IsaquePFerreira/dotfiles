@@ -36,15 +36,16 @@ create_symlink() {
 
 paths="
     .bash_aliases
-	.fehbg
+    .fehbg
     .tmux.conf
     .config/bspwm/bspwmrc
-	.config/bspwm/sxhkdrc
-	.config/bspwm/autostart
-	.config/dunst/dunstrc
-	.config/nvim/init.vim
-	.config/picom/picom.conf
-	.config/polybar/config.ini
+    .config/bspwm/sxhkdrc
+    .config/bspwm/autostart
+    .config/dunst/dunstrc
+    .config/nvim/init.vim
+    .config/picom/picom.conf
+    .config/polybar/config.ini
+    .config/polybar/launch.sh
 "
 echo Create symlinks...
 for path_ in $paths; do
@@ -64,10 +65,10 @@ for path_ in bin/*; do
 done
 
 echo Update system...
-sudo apt --quiet --quiet update && sudo apt --quiet --quiet upgrade -y
+sudo apt --quiet --quiet update && sudo apt upgrade --quiet --quiet -y
 
 echo Install extra packages...
-sudo apt install --quiet --quiet -y suckless-tools docker git neovim tmux python3-venv
+sudo apt install --quiet --quiet -y suckless-tools docker.io git neovim tmux python3-venv
 
 echo Remove orphaned packages and clear cache
 sudo apt autoremove && sudo apt autoclean && sudo apt clean
