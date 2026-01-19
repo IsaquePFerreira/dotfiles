@@ -74,7 +74,7 @@ echo Remove orphaned packages and clear cache
 sudo apt autoremove && sudo apt autoclean && sudo apt clean
 
 read -p 'Would you like to restart?[yN] ' resp
-if [ "${resp,,}" != 's' ]; then
+if [ "${resp,,}" != 'y' ]; then
 	exit 1
 fi
 sudo reboot
