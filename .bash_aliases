@@ -9,7 +9,7 @@ fi
 
 # Define algumas variáveis de ambiente
 export TERM="xterm-256color"
-export TERMCMD="sakura"
+#export TERMCMD="sakura"
 export SHELL="/bin/bash"
 export EDITOR="nvim"
 export PAGER="less"
@@ -17,10 +17,7 @@ export PAGER="less"
 # Aliases
 # ls
 alias ls="ls --color=auto"
-alias l="ls"
-alias la="ls -a"
-alias ll="ls -l"
-alias lal="ls -al"
+alias l="ls -al"
 # grep
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
