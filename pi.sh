@@ -1,78 +1,78 @@
 #!/bin/bash
 # pi.sh
 #
-# Faz a pós-instalação do Void Linux.
+# Post install script.
 #
 
-set -e # Sai em caso de erro
+dotfiles_dir="$PWD"
+user_bin="$HOME/.local/bin"
 
-# Variáveis
-PACKAGES=(
-"build-essential"
-"i3"
-"i3status"
-"suckless-tools"
-"man-db"
-"curl"
-"wget"
-"docker"
-"fzf"
-"gimp"
-"ffmpeg"
-"git"
-"btop"
-"inxi"
-"lynx"
-"ncdu"
-"mpv"
-"cmus"
-"sxiv"
-"mupdf"
-"ranger"
-"cmatrix"
-"xterm"
-"alsa-utils"
-"neovim"
-"tmux"
-"virt-manager"
-"qemu-kvm"
-"php8.2"
-"php8.2-mysql"
-"sassc"
-"imagemagick"
-"python3-pip"
-"python3-venv"
-"gdb"
-) # Lista de pacotes
+create_symlink() { 
+    if ! test $# -eq 2; then
+        echo ERROR: usage: create_symlink target symlink
+        exit 1
+    fi
 
-# Atualiza o sistema
-sudo apt update && sudo apt upgrade -y
+    target=$1
+    symlink=$2
 
-# Instala os pacotes necessários
-sudo apt install -y ${PACKAGES[@]}
+	# Make sure the symlink parent dir exists
+    mkdir -p $(dirname $symlink)
 
-# Copia arquivos de configuração
-mkdir -p $HOME/.config
-cp -r config/* $HOME/.config/
+    if test -L $symlink; then
+        if test $(readlink $symlink) = $target; then
+            echo $symlink is already done
+        else
+            echo $symlink is a symlink to an unknown file
+        fi
+    elif test -f $symlink; then
+        echo $symlink is a normal file, skipping symlink creation
+    elif test -d $symlink; then
+        echo $symlink is a directory, skipping symlink creation
+    else
+        ln -s -v $target $symlink
+    fi
+}
 
-# Copia scripts
-mkdir -p $HOME/.local/bin
-cp -r bin/* $HOME/.local/bin/
-
-# Copia arquivos da home
-for f in bash_aliases tmux.conf; do
-	cp $f "$HOME/.${f##/}"
+paths="
+    .bash_aliases
+	.fehbg
+    .tmux.conf
+    .config/bspwm/bspwmrc
+	.config/bspwm/sxhkdrc
+	.config/bspwm/autostart
+	.config/dunst/dunstrc
+	.config/nvim/init.vim
+	.config/picom/picom.conf
+	.config/polybar/config.ini
+"
+echo Create symlinks...
+for path_ in $paths; do
+    create_symlink $dotfiles_dir/$path_ $HOME/$path_
 done
 
-# Limpa pacotes residuais
+echo Create user bin directory
+if test -d $user_bin; then
+    echo $user_bin already created
+else
+    mkdir -p -v $user_bin
+fi
+
+echo Install scripts...
+for path_ in bin/*; do
+    create_symlink $dotfiles_dir/$path_ $HOME/$path_
+done
+
+echo Update system...
+sudo apt --quiet --quiet update && sudo apt --quiet --quiet upgrade -y
+
+echo Install extra packages...
+sudo apt install --quiet --quiet -y suckless-tools docker git neovim tmux python3-venv
+
+echo Remove orphaned packages and clear cache
 sudo apt autoremove && sudo apt autoclean && sudo apt clean
 
-# GRUB timeout
-sudo sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/' /etc/default/grub
-sudo grub-mkconfig -o /boot/grub/grub.cfg # Recria arquivo de configuração
-
-# Reinicia o Sistema
-read -p 'Deseja reiniciar?[sN] ' resp
+read -p 'Would you like to restart?[yN] ' resp
 if [ "${resp,,}" != 's' ]; then
 	exit 1
 fi
