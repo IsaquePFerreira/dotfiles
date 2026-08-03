@@ -51,10 +51,13 @@ else
     mkdir -p -v $user_bin
 fi
 
-echo Install scripts...
-for path_ in bin/*; do
-    create_symlink $dotfiles_dir/$path_ $HOME/.local/$path_
-done
+read -p 'Do you want to install the scripts in ~/.local/bin?[yN] ' resp
+if [ "${resp,,}" == 'y' ]; then
+    echo Install scripts...
+    for path_ in bin/*; do
+        create_symlink $dotfiles_dir/$path_ $HOME/.local/$path_
+    done
+fi
 
 echo Update system...
 sudo apt --quiet --quiet update && sudo apt upgrade --quiet --quiet -y
@@ -65,8 +68,4 @@ sudo apt install --quiet --quiet -y suckless-tools docker.io git neovim tmux pyt
 echo Remove orphaned packages and clear cache
 sudo apt autoremove && sudo apt autoclean && sudo apt clean
 
-read -p 'Would you like to restart?[yN] ' resp
-if [ "${resp,,}" != 'y' ]; then
-	exit 1
-fi
-sudo reboot
+echo Finish!
