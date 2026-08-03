@@ -36,16 +36,8 @@ create_symlink() {
 
 paths="
     .bash_aliases
-    .fehbg
     .tmux.conf
-    .config/bspwm/bspwmrc
-    .config/bspwm/sxhkdrc
-    .config/bspwm/autostart
-    .config/dunst/dunstrc
-    .config/nvim/init.vim
-    .config/picom/picom.conf
-    .config/polybar/config.ini
-    .config/polybar/launch.sh
+    .config/nvim
 "
 echo Create symlinks...
 for path_ in $paths; do
