@@ -1,1 +1,1 @@
-vim.cmd.source("nolua.vim")
+vim.cmd.source("$HOME/.config/nvim/nolua.vim")
