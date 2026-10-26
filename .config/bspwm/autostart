@@ -5,4 +5,4 @@ xsetroot -cursor_name left_ptr
 $HOME/.config/polybar/launch.sh
 picom &
 dunst &
-
+xinput set-prop "$(xinput list --name-only | grep -i touchpad | head -n1)" "libinput Tapping Enabled" 1

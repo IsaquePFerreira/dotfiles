@@ -4,11 +4,11 @@
 
 # terminal emulator
 super + Return
-	gnome-terminal
+	sakura
 
 # program launcher
 super + p
-	dmenu_run -fn 'Inconsolata-15' -sb '#088600' -sf '#181a17'
+	dmenu_run -fn 'Inconsolata-16' -sb '#088600' -sf '#181a17'
 
 # web browser
 super + w
@@ -28,15 +28,15 @@ Print
 
 # volume plus
 alt + equal
-    vol+
+    $HOME/.config/bspwm/bin/vol+
 
 # volume minus
 alt + minus
-    vol-
+    $HOME/.config/bspwm/bin/vol-
 
 # volume minus
 alt + 0
-    vol-mute
+    $HOME/.config/bspwm/bin/vol-mute
 
 
 # make sxhkd reload its configuration files:
@@ -57,7 +57,7 @@ super + shift + r
 
 # power options
 super + shift + e
-    dmenu-bspwm-logout
+    $HOME/.config/bspwm/bin/dmenu-bspwm-logout
 
 # screen lock
 super + ctrl + l
