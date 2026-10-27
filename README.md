@@ -1,5 +1,5 @@
 # dotfiles
 
-arquivos de configuração e script de pós instalação.
+These are my configuration files and scripts that I use in my setup.
 
-use por sua conta em risco.
+Use them at your own risk. 
