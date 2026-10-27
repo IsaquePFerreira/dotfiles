@@ -9,9 +9,9 @@ fi
 
 # Define algumas variáveis de ambiente
 export TERM="xterm-256color"
-#export TERMCMD="sakura"
+export TERMCMD="sakura"
 export SHELL="/bin/bash"
-export EDITOR="nvim"
+export EDITOR="vim"
 export PAGER="less"
 
 # Aliases
@@ -25,6 +25,9 @@ alias fgrep="fgrep --color=auto"
 # Outros
 alias wget="wget -c"
 alias ips="ip -c -br a"
+alias t="tree -L 2 -a"
+alias cls="clear"
+alias g="git"
 
 # Habilita o autocomplete do BASH a ignorar maiúsculas e maiúsculas
 bind "set completion-ignore-case on"
