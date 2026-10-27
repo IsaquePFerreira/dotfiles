@@ -1,11 +1,11 @@
 #!/bin/bash
-# pi.sh
+# pi
 #
-# Post install script.
+# Post Install script.
 #
 
 dotfiles_dir="$PWD"
-user_bin="$HOME/.local/bin"
+default_wallpaper="$HOME/Pictures/wallpapers/morena.jpg"
 
 create_symlink() { 
     if ! test $# -eq 2; then
@@ -37,35 +37,33 @@ create_symlink() {
 paths="
     .bash_aliases
     .tmux.conf
-    .config/nvim
+    .vimrc
+    .config/bspwm
+    .config/dunst
+    .config/i3
+    .config/picom
+    .config/polybar
+    .config/sakura
+    .config/sway
+    .config/waybar
 "
 echo Create symlinks...
 for path_ in $paths; do
     create_symlink $dotfiles_dir/$path_ $HOME/$path_
 done
 
-echo Create user bin directory
-if test -d $user_bin; then
-    echo $user_bin already created
-else
-    mkdir -p -v $user_bin
-fi
-
-read -p 'Do you want to install the scripts in ~/.local/bin?[yN] ' resp
-if [ "${resp,,}" == 'y' ]; then
-    echo Install scripts...
-    for path_ in bin/*; do
-        create_symlink $dotfiles_dir/$path_ $HOME/.local/$path_
-    done
-fi
-
 echo Update system...
 sudo apt --quiet --quiet update && sudo apt upgrade --quiet --quiet -y
 
 echo Install extra packages...
-sudo apt install --quiet --quiet -y suckless-tools docker.io git neovim tmux python3-venv
+sudo apt install --quiet --quiet -y libxrandr-dev suckless-tools tree feh docker.io vim tmux python3-venv
 
 echo Remove orphaned packages and clear cache
 sudo apt autoremove && sudo apt autoclean && sudo apt clean
+
+if [[ "$DESKTOP_SESSION" = "bspwm" ]]; then
+    echo BSPWM environment detected!
+    feh --bg-scale $default_wallpaper
+fi
 
 echo Finish!
