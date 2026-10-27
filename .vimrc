@@ -2,7 +2,6 @@ if has('termguicolors')
    set termguicolors
 endif
 syntax on
-colorscheme sorbet
 set noswapfile
 set ignorecase
 set smartcase
