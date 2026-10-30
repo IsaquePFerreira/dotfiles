@@ -41,6 +41,7 @@ paths="
     .config/bspwm
     .config/dunst
     .config/i3
+    .config/nvim
     .config/picom
     .config/polybar
     .config/sakura
