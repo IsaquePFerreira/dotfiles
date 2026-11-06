@@ -1,0 +1,25 @@
+#!/bin/bash
+
+apps=$(flatpak list --app --columns=name,application)
+
+# If there are any duplicate names.
+menu=$(printf '%s\n' "$apps" | awk -F'\t' '
+    { name[NR] = $1; id[NR] = $2; count[$1]++ }
+    END {
+        for (i = 1; i <= NR; i++) {
+            label = (count[name[i]] > 1) ? name[i] " (" id[i] ")" : name[i]
+            print label "\t" id[i]
+        }
+    }')
+
+choice=$(printf '%s\n' "$menu" | cut -f1 | sort -f | dmenu -i -p "Flatpak:")
+
+# Esc or empty selection
+[ -z "$choice" ] && exit 0
+
+app_id=$(printf '%s\n' "$menu" | awk -F'\t' -v name="$choice" '$1 == name {print $2; exit}')
+
+# Typed text that matches no app
+[ -z "$menu" ] && exit 1
+
+setsid -f flatpak run "$app_id" >/dev/null 2>&1

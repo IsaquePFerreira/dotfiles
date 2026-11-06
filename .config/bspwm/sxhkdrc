@@ -10,6 +10,10 @@ super + Return
 super + p
 	dmenu_run -fn 'Inconsolata-16' -sb '#088600' -sf '#181a17'
 
+# flatpaks launcher
+super + d
+    $HOME/.config/bspwm/bin/flatpak-menu
+
 # web browser
 super + w
     firefox
